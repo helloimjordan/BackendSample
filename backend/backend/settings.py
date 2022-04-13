@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-bb%*=02um9bf$_a9(8bj-+$=t^qy*@o3kd6r4k1x38u^b4syj4'
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", 'django-insecure-bb%*=02um9bf$_a9(8bj-+$=t^qy*@o3kd6r4k1x38u^b4syj4')
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", 'SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -88,25 +88,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'regionalsdb',
-        'USER': 'doadmin',
-        'PASSWORD': 'a8cqxy4aw9tGzBkp',
-        'HOST': 'regionals-db-do-user-6468732-0.b.db.ondigitalocean.com',
-        'PORT': 25060,
+        'USER': 'USER',
+        'PASSWORD': 'PASSWORD',
+        'HOST': 'HOST',
+        'PORT': PORT,
     }
-}
-"""
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': 'psqlDb',
-        'PORT': 5432,
-    }
-}
-"""
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
