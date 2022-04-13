@@ -90,7 +90,8 @@ cat > capture.sh <<EOL
 ##FUNCTIONS
 #start the capture on the wire
 function setup() {
-  echo "start of file" > flags.txt
+  echo "" > flags.txt 
+  echo "" > formattedflags.txt
   mkdir wire
   mkdir capture
   mkdir -p rules/01
@@ -105,6 +106,15 @@ function setup() {
   nohup dumpcap -i eth0 -f "ip||ip6" -b duration:10 -b files:2 -w wire/wall.pcapng 2>&1
 }
 
+#end gracefully
+function shutdown()
+{
+  killall dumpcap
+  rm -rf capture/ && rm -rf rules/ && rm -rf wire/
+	rm packetwall.sh && rm nohup.out && rm flags.txt
+  exit 0
+}
+#trap shutdown SIGINT
 
 ##CAPTURE RULES
 #HTTP Traffic (rule #1)
@@ -158,6 +168,63 @@ function rule05() {
   fi
 }
 
+
+function rule06() {
+  logfile='../../var/log/syslog'
+  fileSize=$(stat -c%s $logfile)
+  sleep 3;
+  newFileSize=$(stat -c%s $logfile)
+
+  if [ "$fileSize" == "$fileSizeNew" ]; then
+    sed -i '1i 0' flags.txt
+    return
+  else
+    sed -i '1i 1' flags.txt
+  fi
+}
+
+function rule07() {
+  logfile='../../var/log/kern.log'
+  fileSize=$(stat -c%s $logfile)
+  sleep 3;
+  newFileSize=$(stat -c%s $logfile)
+
+  if [ "$fileSize" == "$fileSizeNew" ]; then
+    sed -i '1i 0' flags.txt
+    return
+  else
+    sed -i '1i 1' flags.txt
+  fi
+}
+
+function rule08() {
+  logfile='../../var/log/auth.log'
+  fileSize=$(stat -c%s $logfile)
+  sleep 3;
+  newFileSize=$(stat -c%s $logfile)
+
+  if [ "$fileSize" == "$fileSizeNew" ]; then
+    sed -i '1i 0' flags.txt
+    return
+  else
+    sed -i '1i 1' flags.txt
+  fi
+}
+
+function rule09() {
+  logfile='../../var/log/dpkg.log'
+  fileSize=$(stat -c%s $logfile)
+  sleep 3;
+  newFileSize=$(stat -c%s $logfile)
+
+  if [ "$fileSize" == "$fileSizeNew" ]; then
+    sed -i '1i 0' flags.txt
+    return
+  else
+    sed -i '1i 1' flags.txt
+  fi
+}
+
 function movepcaps() {
   movethispcap=$(ls wire/ | grep pcapng | head -n 1)
   echo "moving this pcap: " $movethispcap
@@ -176,8 +243,13 @@ while true; do
   DAT2=$(date +"%j")
   for i in $PACKETS; do
     echo "searching..."
-    rule01 && rule02 && rule03 && rule04 && rule05
-    sleep 5
+    rule01 && rule02 && rule03 && rule04 && rule05 && rule06 && rule07 && rule08 && rule09
+    x=$(awk 'BEGIN { ORS = "" } { print }' flags.txt | rev | cut -c1-9)
+    echo $x
+    sleep 10
+    # curl results to django
+    # then clear flags file so we arent sending repeat data
+    # truncate -s 0 flags.txt
   done
 done
 
