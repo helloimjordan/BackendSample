@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  api:
+    build: .
+    volumes: 
+      # see file-changes instantly (when developing)
+      - .:/backend
+    # command: >
+    #   bash -c "python manage.py migrate
+    #   && python manage.py createsuperuser --noinput
+    #   && python manage.py runserver 0.0.0.0:8000"
+    command: >
+      bash -c "python manage.py migrate
+      && python manage.py runserver 0.0.0.0:8000"
+    ports: 
+      - "8000:8000"
+    environment:
+      DJANGO_SUPERUSER_USERNAME: ${DJANGO_SUPERUSER_USERNAME:-admin}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD:-password}
+      DJANGO_SUPERUSER_EMAIL: ${DJANGO_SUPERUSER_EMAIL:-admin@admin123.com}
+      PYTHONUNBUFFERED: 1
+    restart: unless-stopped
+
+# env vars to set:
+#   DJANGO_ALLOWED_HOSTS, DJANGO_SECRET_KEY
