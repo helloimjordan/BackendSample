@@ -1,15 +1,10 @@
 # regionals22
-Regionals repo
+Sample Backend Code
 
-NOTE: All vms made should use the "regionals22" firewall tag!
 
-## Attacking honeypots (as of April 9, 2022)
+## Attacking honeypots
 atomic-operator run --atomics-path "/opt/atomic-operator" --techniques T1110.001 --hosts "10.138.20.186,10.128.0.2" --username "webuser" --password "password" --ssh_port 64295
 
-## Credentials and Ports
-### Local credentials
-Root: p@55woRd
-Webuser: password
 
 ### CLI Tools
 - tshark
@@ -17,14 +12,13 @@ Webuser: password
 - osquery (command is osqueryi)
 
 ### Tools
-- https 5601: Wazuh (admin/admin)
-- http 8010: Splunk (admin/SuperSekure1!)
-- https 8840: Nessus (admin/admin)
-- https 8889: Velociraptor (admin/admin)
-- https 64297: Tpot Admin Panel (webuser/password)
+- https 5601: Wazuh 
+- http 8010: Splunk 
+- https 8840: Nessus 
+- https 8889: Velociraptor 
+- https 64297: Tpot Admin Panel 
 
 ## Honeypot Setup in the cloud
-
 1. Create a new Memory Optimized Droplet VM (32 GB RAM, 4 CPUs, 100 GB Storage) in SFO3, and run the honeypot.sh script. 
 2. Use the regionals22 network tag to open specific ports to the outside.
 3. DO ONLY: Use the regionals22 VPC network
@@ -38,5 +32,3 @@ Webuser: password
    4. Set any IP settings if you need
    5. Click "Create"
 
-### Digital Ocean
-1. Make a snapshot 
