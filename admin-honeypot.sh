@@ -234,6 +234,8 @@ function movepcaps() {
 #MAIN PROGRAM
 #set everything up and wait
 setup &
+ip=$(hostname -I | awk '{print $1}')
+ip=\"$ip\"
 sleep 10
 #begin the search
 while true; do
@@ -243,9 +245,10 @@ while true; do
   DAT2=$(date +"%j")
   for i in $PACKETS; do
     echo "searching..."
-    rule01 && rule02 && rule03 && rule04 && rule05 && rule06 && rule07 && rule08 && rule09
-    x=$(awk 'BEGIN { ORS = "" } { print }' flags.txt | rev | cut -c1-9)
-    echo $x
+    rule09 && rule08 && rule07 && rule06 && rule05 && rule04 && rule03 && rule02 && rule01
+    flags=$(awk 'BEGIN { ORS = "" } { print }' flags.txt | cut -c1-9)
+    flags=\"$flags\"
+    echo $flags
     sleep 10
     rm /opt/graph/wire/$movethispcap
     #curl  http://127.0.0.1:8000/DjangoEndpoint  -H 'content-type: application/json'  -d '{"row": "'$flags'", "ip": "'$ip'"}'
