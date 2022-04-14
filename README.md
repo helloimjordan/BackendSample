@@ -1,9 +1,9 @@
-# regionals22
-Sample Backend Code
+
+## Snippets of backend code of BACCC Project
 
 
 ## Attacking honeypots
-atomic-operator run --atomics-path "/opt/atomic-operator" --techniques T1110.001 --hosts "10.138.20.186,10.128.0.2" --username "webuser" --password "password" --ssh_port 64295
+atomic-operator run --atomics-path "/opt/atomic-operator" --techniques T1110.001 --hosts "LIST_OF_IP's" --username "webuser" --password "password" --ssh_port 64295
 
 
 ### CLI Tools
@@ -20,8 +20,6 @@ atomic-operator run --atomics-path "/opt/atomic-operator" --techniques T1110.001
 
 ## Honeypot Setup in the cloud
 1. Create a new Memory Optimized Droplet VM (32 GB RAM, 4 CPUs, 100 GB Storage) in SFO3, and run the honeypot.sh script. 
-2. Use the regionals22 network tag to open specific ports to the outside.
-3. DO ONLY: Use the regionals22 VPC network
 
 ### GCP Image
 1. [Create an image](https://console.cloud.google.com/compute/imagesAdd) from your new VM. This will be the base image for all VMs provisioned through this tool 1. Please include a description with basic information, such as the username/password to login, what changes are in the image, and what it's used for so it's easier to reuse if we need
