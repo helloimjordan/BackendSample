@@ -1,9 +1,10 @@
 
 ## Snippets of backend code of BACCC Project
+this is just meant to be a sample - not a full functioning backend. live link to project will be uploaded soon - WIP.
 
 
-## Attacking honeypots
-atomic-operator run --atomics-path "/opt/atomic-operator" --techniques T1110.001 --hosts "LIST_OF_IP's" --username "webuser" --password "password" --ssh_port 64295
+## Attacking honeypots from attack-box
+atomic-operator run --atomics-path "/path/to/atomic-operator" --techniques ENTER_TECHNIQUE_HERE --hosts "LIST_OF_IP's" --username "user" --password "password" --ssh_port PORT
 
 
 ### CLI Tools
