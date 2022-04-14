@@ -5,8 +5,8 @@ mkdir apps && cd apps
 
 export PATH=$PATH:/usr/sbin
 
-useradd -c "webuser" -m webuser
-echo "webuser:password" | chpasswd
+useradd -c "user" -m user
+echo "user:password" | chpasswd
 usermod -aG sudo webuser
 
 #HONEYPOT INSTALL
@@ -17,7 +17,7 @@ cat > /root/tpot.conf <<EOL
 # tpot configuration file
 # myCONF_TPOT_FLAVOR=[STANDARD, SENSOR, INDUSTRIAL, COLLECTOR, NEXTGEN]
 myCONF_TPOT_FLAVOR='STANDARD'
-myCONF_WEB_USER='webuser' 
+myCONF_WEB_USER='user' 
 myCONF_WEB_PW='password'
 EOL
 ./install.sh --conf=/root/tpot.conf
@@ -55,8 +55,8 @@ pdfgen_trusted_hosts = *.splunk.com, 127.0.0.1/24
 EOL
 cat > /opt/splunk/etc/system/local/user-seed.conf <<EOL
 [user_info]
-USERNAME = admin
-PASSWORD = SuperSekure1!
+USERNAME = username
+PASSWORD = password
 EOL
 /opt/splunk/bin/splunk restart
 
@@ -80,7 +80,7 @@ curl -so wazuh-agent-4.2.6.deb https://packages.wazuh.com/4.x/apt/pool/main/w/wa
 systemctl daemon-reload && systemctl enable wazuh-agent && systemctl start wazuh-agent
 
 #nessus
-docker run --name "nessus" -d -p 8840:8834 --restart unless-stopped -e USERNAME=admin -e PASSWORD=admin tenableofficial/nessus 
+docker run --name "nessus" -d -p 8840:8834 --restart unless-stopped -e USERNAME=username -e PASSWORD=password tenableofficial/nessus 
 
 #packetwall
 mkdir /opt/graph
@@ -247,9 +247,9 @@ while true; do
     x=$(awk 'BEGIN { ORS = "" } { print }' flags.txt | rev | cut -c1-9)
     echo $x
     sleep 10
-    # curl results to django
-    # then clear flags file so we arent sending repeat data
-    # truncate -s 0 flags.txt
+    rm /opt/graph/wire/$movethispcap
+    #curl  http://127.0.0.1:8000/DjangoEndpoint  -H 'content-type: application/json'  -d '{"row": "'$flags'", "ip": "'$ip'"}'
+    echo "" > flags.txt
   done
 done
 
