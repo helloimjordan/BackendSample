@@ -12,29 +12,25 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 
 
-
+"""
+Viewset for viewing and editing user instances
+"""
 class UserViewset(viewsets.ModelViewSet):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer 
 
-
+"""
+Viewset for viewing and editing incident report instances
+"""
 class IncidentReportViewSet(CreateAPIView):
 	authentication_classes = [TokenAuthentication, ]
 	permission_classes = [IsAuthenticated]
 	serializer_class = IncidentReportSerializer
 	query_set = IncidentReport.objects.all()
 
-
-# class TeamViewSet(viewsets.ModelViewSet):
-# 	# queryset = Team.objects.f
-# 	# authentication_classes = [TokenAuthentication, ]
-# 	# permission_classes = [IsAuthenticated]
-# 	serializer_class = TeamSerializer
-
-# 	def get_queryset(self):
-# 		player = Player.objects.filter(user=self.request.user)
-# 		return
-
+"""
+API endpoint that allows waterfall graph data to be sent to front end
+"""
 class MainWaterfallGraphViewSet(ListCreateAPIView):
 	queryset = MainWaterfallGraph.objects.all()
 	serializer_class = MainWaterfallGraphSerializer
@@ -43,8 +39,10 @@ class MainWaterfallGraphViewSet(ListCreateAPIView):
 		#latest_12_rows = MainWaterfallGraph.objects.order_by("created_at")[:12:-1]
 		latest_12_rows = {"row":{"p80":"0","p443":"1","p3389":"0","p3306":"1","p25":"0","syslog":"1","kernlog":"0","authlog":"1","dpkglog":"0"}}                                                                                                           
 		return latest_12_rows
-
-
+	
+"""
+API endpoint that looks up team honeypot IP based on user AuthToken info and returns proper webtool URLS to front end
+"""
 class ReturnWebTools(ObtainAuthToken):
 	def post(self, request, *args, **kwargs):
 		response = super(ReturnWebTools, self).post(request, *args, **kwargs)
