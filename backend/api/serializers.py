@@ -4,6 +4,10 @@ from rest_framework import serializers
 from .models import IncidentReport, MainWaterfallGraph, Team
 from django.contrib.auth.models import User
 
+
+"""
+Incident report serializer 
+"""
 class IncidentReportSerializer(ModelSerializer):
 	class Meta:
 		model = IncidentReport
@@ -11,16 +15,18 @@ class IncidentReportSerializer(ModelSerializer):
 			'id', "location", 'tactic','team','attack_time', 'attack_time',
 		)
 
+"""
+User serializer
+"""
 class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = User
 		fields = ("username", "password",)
 
-# class TeamSerializer(serializers.ModelSerializer):
-# 	class Meta:
-# 		model = Team
-# 		fields = ("honey_pot_ip",)
-
+		
+"""
+Waterfall graph serialzer - data is curled from admin honeypot
+"""
 class MainWaterfallGraphSerializer(serializers.ModelSerializer):
 	ip = serializers.CharField(write_only=True)
 	class Meta:
@@ -31,10 +37,10 @@ class MainWaterfallGraphSerializer(serializers.ModelSerializer):
 		row_activity_bin_str = validated_data["row"]
 		incoming_req_ip = validated_data["ip"]
 
-		# check to see if incoming request has valid ip in body
+		# Check to see if incoming request has valid ip in body
 		if not Team.objects.filter(honey_pot_ip=incoming_req_ip).exists():
 			raise serializers.ValidationError("ip not allowed")
-		# maps indexes of a string to a port or log, ordered by how the its done in
+		# Maps indexes of a string to a port or log, ordered by how the its done in
 		# the frontend from left to right
 		try:
 			row_map = {
