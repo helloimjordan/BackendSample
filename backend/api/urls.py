@@ -3,11 +3,18 @@ from .views import ReturnWebTools, UserViewset, IncidentReportViewSet, MainWater
 from rest_framework import routers
 from rest_framework.authtoken import views
 
+"""
+Django automatic URL routing for user
+https://www.django-rest-framework.org/api-guide/routers/
+"""
 router = routers.DefaultRouter()
 router.register("user", UserViewset)
-#router.register("web-tools", send_webtool_info, basename="tools")
-# router.register("team", TeamViewSet, basename="Team")
 
+"""
+Sequence of url patterns Django looks for when this module loads.
+If URL pattern matches, Django imports and calls given view.
+https://docs.djangoproject.com/en/4.0/topics/http/urls/
+"""
 urlpatterns = [
     path("", include(router.urls)),
     path("ir-submissions", IncidentReportViewSet.as_view()),
