@@ -1,24 +1,36 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-# Create your models here.
 
+
+
+"""
+Team model instance, derived from Model class
+"""
 class Team(models.Model):
     name = models.CharField(max_length=60, blank=False, unique=True)
     honey_pot_ip = models.GenericIPAddressField(unique=True)
     score = models.IntegerField(default=0)
     team_password = models.CharField(max_length=100, blank=False)
-
+    
+    # returns string representation of team name
     def __str__(self) -> str:
         return f"{self.name}"
 
+"""
+Player model, derived from Model class
+"""
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.SET_DEFAULT, default=None, blank=True, null=True, related_name="players")
-
+    
+    # returns string representation of player username
     def __str__(self) -> str:
         return self.user.username
 
+"""
+Incident Report model, derived from Model class
+"""
 class IncidentReport(models.Model):
 
     class Location(models.TextChoices):
@@ -60,11 +72,14 @@ class IncidentReport(models.Model):
     event_type = models.CharField(max_length=70, choices=EventType.choices, default=EventType.ANOMALY)   
     attack_time = models.DateTimeField(default=timezone.now)
     
+    # returns string representation of location (port/log), event type, tactic, and attack time
     def __str__(self):
         template = '{0.location} {0.event_type} {0.tactic} {0.attack_time}'
         return template.format(self)
 
-
+"""
+Main Waterfall Graph data model
+"""
 class MainWaterfallGraph(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     row = models.JSONField(blank=False)
